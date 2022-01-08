@@ -1,0 +1,85 @@
+{% block content %}
+<html lang="en" dir="ltr">
+  <head>
+    <meta name="viewport" content="with=device-width, initial-scale=1.0">
+    <title>Comparision Table</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='styleprofile.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/65a82e1708.js"></script>
+  </head>
+  <body>
+    <section class="header">
+      <nav>
+        <a href="/"><img src="{{ url_for('static',filename='images/logo.png') }}"></a>
+        <div class="nav-links" id="navLinks">
+          <ul>
+            <li><a href="">Text To Speech</a></li>
+          </ul>
+        </div>
+      </nav>
+      <div>
+        <form class="text-manage" action="" method="post">
+          <div class="msg">{{ msg }}</div>
+          <textarea rows = "5" cols = "60" name = "Input_Field" type="text" class="input-field" placeholder="Input Text Here" required></textarea>
+          <label>Text to Mel Model:</label>
+          <select name="Text2Mel" class="input-field1" required>
+            <option class="dropdown" value="TACOTRON">TACOTRON</option>
+            <option class="dropdown" value="FASTSPEECH">FASTSPEECH</option>
+            <option class="dropdown" value="FASTSPEECH2">FASTSPEECH2</option>
+          </select>
+          <br></br>
+          <label>Vocoder Model:</label>
+          <select name="Vocoder" class="input-field1" required>
+            <option class="dropdown" value="MELGAN">MELGAN</option>
+            <option class="dropdown" value="MELGAN-STFT">MELGAN-STFT</option>
+            <option class="dropdown" value="MB-MELGAN">MB-MELGAN</option>
+          </select>
+          <br></br>
+          <input name="File_name" type="text"class="input-field"placeholder="Enter File Name" required >
+          <br></br>
+          <button type="submit"class="hero-btn">Submit</button>
+        </form>
+      </div>
+      {% if info_content['id'] %}
+      <div class="table-responsive">
+        <h2 class="text-center">Comparison Table</h2>
+        <table class="table table-success table-striped table-hover">
+        <caption>List of Audio Files</caption>
+        <thead>
+          <tr>
+            <th scope="col">S/N</th>
+            <th scope="col">Audio File</th>
+            <th scope="col">Text2Mel Model</th>
+            <th scope="col">Vocoder</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for x in aud_info %}
+          <tr>
+            <td></td>
+            <!--<td><audio src="{{ url_for('static', filename=aud_info[x][0]) }}" type="audio/wav"></audio></td>
+            <td>{{ aud_info[x][0] }}</td>-->
+            <td><audio controls><source src="{{ url_for('static', filename=aud_info[x][0]) }}" type="audio/wav"></audio></td>
+            <td>{{ aud_info[x][1] }}</td>
+            <td>{{ aud_info[x][2] }}</td>
+            <td>
+              <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                <a href="" class="btn btn-primary btn-danger"><i class="fas fa-trash-alt"></i></a>
+                <a class="btn btn-primary btn-danger"><i class="fas fa-images"><!--<img src="{{ url_for('static', filename=aud_info[x][3]) }}">--></i></a>
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+      </div>
+      {% else %}
+      <h2 class="text-center">No Audio File Found</h2>
+      {% endif %}
+    </section>
+  </body>
+</html>
+{% endblock %}
